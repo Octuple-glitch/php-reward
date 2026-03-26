@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Claim Reward</title>
+<title>Exclusive Reward</title>
 
 <style>
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f2f2f2;
-    color: #222;
+    background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
     text-align: center;
 }
 
@@ -19,30 +18,30 @@ body {
     padding: 20px;
 }
 
-.box {
+.card {
     background: white;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
 h1 {
     font-size: 22px;
-    margin-bottom: 10px;
 }
 
 .progress {
     height: 10px;
     background: #ddd;
-    border-radius: 10px;
+    border-radius: 20px;
     overflow: hidden;
     margin: 15px 0;
 }
 
 .progress-bar {
     height: 100%;
-    width: 87%;
-    background: #4caf50;
+    width: 0%;
+    background: linear-gradient(90deg, #28a745, #4caf50);
+    transition: width 2s ease;
 }
 
 .steps {
@@ -57,14 +56,40 @@ h1 {
 
 .button {
     display: block;
-    background: #28a745;
+    background: linear-gradient(90deg, #28a745, #34d058);
     color: white;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 10px;
     text-decoration: none;
     font-weight: bold;
     margin-top: 15px;
     font-size: 16px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {transform: scale(1);}
+    50% {transform: scale(1.05);}
+    100% {transform: scale(1);}
+}
+
+.timer {
+    font-size: 14px;
+    color: red;
+    margin-top: 10px;
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    left: 10px;
+    right: 10px;
+    background: black;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 13px;
+    display: none;
 }
 
 .small {
@@ -78,31 +103,82 @@ h1 {
 <body>
 
 <div class="container">
-    <div class="box">
+    <div class="card">
 
-        <h1>🎁 Claim Your Free Reward</h1>
-        <p>Available for Philippines users only 🇵🇭</p>
+        <h1>🎁 Unlock Your Exclusive Reward</h1>
+        <p>Philippines users only 🇵🇭</p>
 
         <div class="progress">
-            <div class="progress-bar"></div>
+            <div class="progress-bar" id="bar"></div>
         </div>
-        <p><b>87% claimed today</b> — only few slots left!</p>
+        <p><b id="percent">0%</b> completed today</p>
 
         <div class="steps">
-            <p>✔ Step 1: Click Continue</p>
-            <p>✔ Step 2: Enter your mobile number</p>
-            <p>✔ Step 3: Confirm PIN from SMS</p>
-            <p>✔ Step 4: Receive your reward</p>
+            <p>✔ Click Continue</p>
+            <p>✔ Enter your mobile number</p>
+            <p>✔ Confirm PIN from SMS</p>
+            <p>✔ Receive reward instantly</p>
         </div>
 
         <a class="button" href="https://www.orientationdisk.wiki/click?offer_id=35864&pub_id=287219&pub_click_id=tiktok1&site=reward">
-            👉 CONTINUE
+            👉 CONTINUE NOW
         </a>
 
-        <p class="small">*Limited time offer. Mobile users only.</p>
+        <div class="timer">⏳ Offer expires in <span id="time">02:00</span></div>
+
+        <p class="small">*Limited availability. Mobile users only.</p>
 
     </div>
 </div>
+
+<div class="notification" id="notif"></div>
+
+<script>
+// Progress animation
+let percent = 0;
+let bar = document.getElementById("bar");
+let text = document.getElementById("percent");
+
+let interval = setInterval(() => {
+    percent += Math.floor(Math.random() * 5) + 1;
+    if (percent >= 87) {
+        percent = 87;
+        clearInterval(interval);
+    }
+    bar.style.width = percent + "%";
+    text.innerText = percent + "%";
+}, 200);
+
+// Countdown timer
+let time = 120;
+let timer = document.getElementById("time");
+
+setInterval(() => {
+    let min = Math.floor(time / 60);
+    let sec = time % 60;
+    timer.innerText = `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    if (time > 0) time--;
+}, 1000);
+
+// Fake notifications
+let names = ["John", "Mark", "Kevin", "Chris", "Alex", "Daniel"];
+let cities = ["Manila", "Cebu", "Davao", "Quezon"];
+
+function showNotif() {
+    let notif = document.getElementById("notif");
+    let name = names[Math.floor(Math.random()*names.length)];
+    let city = cities[Math.floor(Math.random()*cities.length)];
+
+    notif.innerText = `${name} from ${city} just claimed reward 🎉`;
+    notif.style.display = "block";
+
+    setTimeout(() => {
+        notif.style.display = "none";
+    }, 3000);
+}
+
+setInterval(showNotif, 4000);
+</script>
 
 </body>
 </html>
